@@ -1,11 +1,5 @@
 .tern-port
 /node_modules
-/model
-/transform
-/state
-/view
-/history
-/collab
 /commands
 /inputrules
 /keymap
