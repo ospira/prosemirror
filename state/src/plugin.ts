@@ -85,7 +85,7 @@ export class Plugin<PluginState = any> {
   key: string
 
   /// Extract the plugin's state field from an editor state.
-  
+  //// plugin state persisted/saved within EditorState at a given key
   getState(state: EditorState): PluginState | undefined { return (state as any)[this.key] }
 }
 
