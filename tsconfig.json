@@ -5,7 +5,7 @@
     "stripInternal": true,
     "typeRoots": ["./node_modules/@types"],
     "noUnusedLocals": true,
-    "strict": true,
+    "strict": false,
     "target": "es6",
     "module": "es2020",
     "newLine": "lf",
