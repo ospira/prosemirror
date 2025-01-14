@@ -57,9 +57,14 @@ class TrackState {
     let newBlame = updateBlameMap(this.blameMap, transform, this.commits.length) as Span[]
     // Create a new state—since these are part of the editor state, a
     // persistent data structure, they must not be mutated.
-    return new TrackState(newBlame, this.commits,
-                          this.uncommittedSteps.concat(inverted),
-                          this.uncommittedMaps.concat(transform.mapping.maps))
+    const uncommittedSteps = this.uncommittedSteps.concat(inverted)
+    const uncommittedMaps = this.uncommittedMaps.concat(transform.mapping.maps)
+    return new TrackState(
+      newBlame, 
+      this.commits,
+      uncommittedSteps,
+      uncommittedMaps
+    )
   }
 
   // When a transaction is marked as a commit, this is used to put any
@@ -133,8 +138,8 @@ const trackPlugin = new Plugin({
     init(_, instance) {
       return new TrackState([new Span(0, instance.doc.content.size, null)], [], [], [])
     },
-    apply(tr, tracked, oldState, newState) {
-      console.log({tr, tracked}) // tracked is THIS plugin's state
+    apply(tr, tracked, oldEditorState, newEditorState) {
+      console.log({tr, tracked, oldEditorState, newEditorState}) // tracked is THIS plugin's state
       // as opposed to oldState/newState being EditorState
       if (tr.docChanged) tracked = tracked.applyTransform(tr)
       let commitMessage = tr.getMeta(this)

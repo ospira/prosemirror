@@ -73,6 +73,35 @@ export class StepMap implements Mappable {
   /// Create a position map. The modifications to the document are
   /// represented as an array of numbers, in which each group of three
   /// represents a modified chunk as `[start, oldSize, newSize]`.
+
+  /// when adding a new character in a previously unreached version of the document
+  //// expect StepMap something like:
+  /*
+  */
+  /*
+    {
+      ranges: [
+        80, - position in document (start)
+        0, - oldSize (had been empty so 0)
+        1 - newSize (inserted one character while typing so 1)
+      ],
+      inverted: false
+    }
+  */
+  // when backspacing a whole sentence however
+  /*
+    {
+      ranges: [
+        64, - index of start of sentence in document (start)
+        22 - oldSize (had been a whole short sentence so 22)
+        0 - deleted all of it so now it is 0
+      ],
+      inverted: false
+    }
+  */
+  //// note if transactions are atomic to constant sizes 
+  ///// ie every step the same "positionmap" with respect to oldSize and newSize
+  ////// this abstraction would probably not be necessary
   constructor(
     /// @internal
     readonly ranges: readonly number[],
