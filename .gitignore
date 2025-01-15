@@ -1,7 +1,6 @@
 .tern-port
 /node_modules
 view
-collab
 /commands
 /inputrules
 /keymap
