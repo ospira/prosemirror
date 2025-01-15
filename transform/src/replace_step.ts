@@ -30,7 +30,7 @@ export class ReplaceStep extends Step {
       return StepResult.fail("Structure replace would overwrite content")
     return StepResult.fromReplace(doc, this.from, this.to, this.slice)
   }
-
+  
   getMap() {
     return new StepMap([this.from, this.to - this.from, this.slice.size])
   }

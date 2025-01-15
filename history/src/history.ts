@@ -400,6 +400,7 @@ export function history(config: HistoryOptions = {}): Plugin {
         return new HistoryState(Branch.empty, Branch.empty, null, 0, -1)
       },
       apply(tr, hist, state) {
+        console.log("history:", {tr, hist, state})
         return applyTransaction(hist, state, tr, config as Required<HistoryOptions>)
       }
     },

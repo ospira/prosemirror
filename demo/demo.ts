@@ -7,6 +7,8 @@ import {schema} from "prosemirror-schema-basic"
 import {addListNodes} from "prosemirror-schema-list"
 import {exampleSetup} from "prosemirror-example-setup"
 import {Mapping, ReplaceStep, StepMap, Transform} from "prosemirror-transform"
+import {undo, redo, /* history (already included in exampleSetup()) */} from "prosemirror-history"
+import {keymap} from "prosemirror-keymap"
 
 
 
@@ -141,7 +143,11 @@ const trackPlugin = new Plugin({
     apply(tr, tracked, oldEditorState, newEditorState) {
       console.log({tr, tracked, oldEditorState, newEditorState}) // tracked is THIS plugin's state
       // as opposed to oldState/newState being EditorState
-      if (tr.docChanged) tracked = tracked.applyTransform(tr)
+      if (tr.docChanged) {
+        const transaction = tr
+        console.log("Doc Changed | Transaction:", {transaction})
+        tracked = tracked.applyTransform(tr)
+      }
       let commitMessage = tr.getMeta(this)
       if (commitMessage) tracked = tracked.applyCommit(commitMessage, new Date(tr.time))
       return tracked // return new instance of TrackState (immutable)
@@ -187,7 +193,7 @@ const highlightPlugin = new Plugin({
 
 let state = EditorState.create({
   schema,
-  plugins: exampleSetup({schema}).concat(trackPlugin, highlightPlugin)
+  plugins: exampleSetup({schema}).concat(keymap({"Mod-z": undo, "Mod-y": redo}), trackPlugin, highlightPlugin)
 }), view
 
 let lastRendered = null

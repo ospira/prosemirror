@@ -57,6 +57,7 @@ export class Transform {
   maybeStep(step: Step) {
     let result = step.apply(this.doc)
     if (!result.failed) this.addStep(step, result.doc!)
+    console.log("maybeStep... result?:", {result})
     return result
   }
 
