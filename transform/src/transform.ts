@@ -56,8 +56,11 @@ export class Transform {
   /// fails. Returns the step result.
   maybeStep(step: Step) {
     let result = step.apply(this.doc)
-    if (!result.failed) this.addStep(step, result.doc!)
-    console.log("maybeStep... result?:", {result})
+    if (!result.failed) {
+      console.log("Transform.maybeStep", "maybeStep (step.apply()) ran no error, step result:", {result})
+      this.addStep(step, result.doc!)
+    }
+
     return result
   }
 
@@ -70,9 +73,13 @@ export class Transform {
   /// @internal
   addStep(step: Step, doc: Node) {
     this.docs.push(this.doc)
+    console.log("Transform.addStep", "pre doc", this.docs[this.docs.length - 1], this.docs)
     this.steps.push(step)
+    console.log("Transform.addStep", "the step that changed it", step, this.steps)
     this.mapping.appendMap(step.getMap())
+    // this where docs actually change?
     this.doc = doc
+    console.log("Transform.addStep", "post doc", doc)
   }
 
   /// Replace the part of the document between `from` and `to` with the

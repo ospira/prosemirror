@@ -88,7 +88,9 @@ export class StepResult {
   /// failed one if it throws a `ReplaceError`.
   static fromReplace(doc: Node, from: number, to: number, slice: Slice) {
     try {
-      return StepResult.ok(doc.replace(from, to, slice))
+      const stepresult = StepResult.ok(doc.replace(from, to, slice))
+      console.log("StepResult", "fromReplace", {stepresult})
+      return stepresult
     } catch (e) {
       if (e instanceof ReplaceError) return StepResult.fail(e.message)
       throw e
